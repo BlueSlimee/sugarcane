@@ -9,10 +9,10 @@ defmodule Sugarcane.Schemas.Punishments do
   end
   
   def get(id) do
-    data = Sugarcane.Repo.get_by(Sugarcane.Schemas.Punishments, user_id: id)
+    data = Sugarcane.Repo.get_by(Sugarcane.Schemas.Punishments, id: id)
     
     case data do
-      nil -> Sugarcane.Repo.insert(%Sugarcane.Schemas.Punishments{user_id: id})
+      nil -> Sugarcane.Repo.insert(%Sugarcane.Schemas.Punishments{id: id})
       _ -> data
     end
   end
