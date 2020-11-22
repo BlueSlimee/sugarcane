@@ -1,21 +1,13 @@
 # Sugarcane
 
-**TODO: Add description**
+*please don't judge me, this is my first actual elixir project!!*
+Yet another simple Discord bot, focused on moderation.
 
-## Installation
+## Setting it up
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `sugarcane` to your list of dependencies in `mix.exs`:
+*btw, you'll need to set up a postgres instance*
+- Rename `config/config.exs.sample` to `config/config.exs`
+- Fill out everything you need to (database credentials, tokens, etc)
+- Run `mix deps.get`
 
-```elixir
-def deps do
-  [
-    {:sugarcane, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/sugarcane](https://hexdocs.pm/sugarcane).
-
+Now, you can use `iex -S mix` to start the bot!
