@@ -1,0 +1,14 @@
+use Mix.Config
+
+config :sugarcane,
+  ecto_repos: [Sugarcane.Repo]
+
+config :sugarcane, Sugarcane.Repo,
+  database: "db name",
+  username: "user",
+  password: "password",
+  hostname: "localhost"
+
+config :nostrum,
+  token: "token here",
+  num_shards: :auto
