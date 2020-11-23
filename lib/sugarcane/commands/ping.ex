@@ -3,7 +3,7 @@ defmodule Sugarcane.Commands.Ping do
   
   def name(), do: "ping"
   def aliases(), do: ["pong"]
-  
+  def description(), do: ""
   def run(ctx) do
     {:ok, f, _} = DateTime.from_iso8601(ctx.msg.timestamp)
     diff = DateTime.diff(DateTime.now!("Etc/UTC"), f)

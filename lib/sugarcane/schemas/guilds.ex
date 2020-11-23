@@ -8,11 +8,9 @@ defmodule Sugarcane.Schemas.Guilds do
   end
   
   def get(id) do
-    data = Sugarcane.Repo.get_by(Sugarcane.Schemas.Guilds, guild_id: id)
-    
-    case data do
+    case Sugarcane.Repo.get_by(Sugarcane.Schemas.Guilds, guild_id: id) do
       nil -> Sugarcane.Repo.insert(%Sugarcane.Schemas.Guilds{guild_id: id})
-      _ -> data
+      data -> data
     end
   end
 end

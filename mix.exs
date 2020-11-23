@@ -14,7 +14,7 @@ defmodule Sugarcane.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :prometheus_ex, :prometheus_ecto, :prometheus_plugs],
       mod: {Sugarcane.Application, []}
     ]
   end
@@ -24,7 +24,11 @@ defmodule Sugarcane.MixProject do
     [
       {:nostrum, "~> 0.4"},
       {:ecto_sql, "~> 3.2"},
-      {:postgrex, "~> 0.15"}
+      {:postgrex, "~> 0.15"},
+      {:plug_cowboy, "~> 2.0"},
+      {:prometheus_ex, "~> 3.0"},
+      {:prometheus_plugs, "~> 1.1"},
+      {:prometheus_ecto, "~> 1.0"}
     ]
   end
 end

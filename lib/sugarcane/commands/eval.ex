@@ -13,7 +13,7 @@ defmodule Sugarcane.Commands.Eval do
     end
   end
   
-  def run(ctx) when ctx.msg.author != 673677252462116874 do
-    Context.reply(ctx, ":x: only certain people can do that, and you're not one of 'em.")
+  def run(ctx) do
+    Context.reject_action(ctx, nil, :bdo, nil)
   end
 end
