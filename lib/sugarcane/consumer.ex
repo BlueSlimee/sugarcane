@@ -11,7 +11,8 @@ defmodule Sugarcane.Consumer do
     [
       Commands.Ping,
       Commands.Eval,
-      Commands.Ban
+      Commands.Ban,
+      Commands.Kick
     ]
   end
   

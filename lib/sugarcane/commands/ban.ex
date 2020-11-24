@@ -21,7 +21,7 @@ defmodule Sugarcane.Commands.Ban do
           take_action(
             ctx,
             punisher.user,
-            punishee.id,
+            punishee,
             List.delete_at(ctx.args, 0) |> Enum.join(" ")
           )
         end
@@ -31,12 +31,19 @@ defmodule Sugarcane.Commands.Ban do
     end
   end
   
-  def take_action(ctx, punisher, user_id, reason) do
-    Nostrum.Api.create_guild_ban(
+  def take_action(ctx, punisher, punishee, reason) do
+    actual_reason = reason == "" && "no reason specified." || reason
+    case Nostrum.Api.create_guild_ban(
       ctx.msg.guild_id,
-      user_id,
-      30,
-      "punished by #{punisher.username}##{punisher.discriminator} (#{punisher.id}): #{reason}"
-    )
+      punishee.id,
+      7,
+      "punished by #{punisher.username}##{punisher.discriminator} (#{punisher.id}): #{actual_reason}"
+    ) do
+      {:error, _reason} ->
+        Context.reject_action(ctx, nil, :rhm, nil)
+      _ ->
+        Sugarcane.Schemas.Punishments.create(Integer.to_string(punishee.id), Integer.to_string(ctx.msg.guild_id), "ban", actual_reason)
+        Context.reply(ctx, ":wave: #{punishee.username} got smashed by a hammer.")
+    end
   end
 end

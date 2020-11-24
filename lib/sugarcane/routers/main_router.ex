@@ -1,5 +1,6 @@
 defmodule Sugarcane.Routers.Main do
   use Plug.Router
+  alias Sugarcane.Templates.Helper
   
   plug Sugarcane.MetricsExporter
   plug :match
@@ -7,6 +8,6 @@ defmodule Sugarcane.Routers.Main do
   
   
   get "/" do
-    send_resp(conn, 200, "hotline")
+    Helper.render(conn, "index")
   end
 end
