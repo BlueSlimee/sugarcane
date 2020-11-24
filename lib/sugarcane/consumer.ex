@@ -12,11 +12,13 @@ defmodule Sugarcane.Consumer do
       Commands.Ping,
       Commands.Eval,
       Commands.Ban,
-      Commands.Kick
+      Commands.Kick,
+      Commands.Bi,
+      Commands.Help
     ]
   end
   
-  def handle_event({:MESSAGE_CREATE, msg, _ws_state}) when is_integer(msg.guild_id) and msg.author.bot != true and msg.author.id != 779748651035131945 do
+  def handle_event({:MESSAGE_CREATE, msg, ws_state}) when is_integer(msg.guild_id) and msg.author.bot != true and msg.author.id != 779748651035131945 do
     Sugarcane.Metrics.ProcessedMessageInstrumenter.inc()
     guild = Sugarcane.Schemas.Guilds.get(Integer.to_string(msg.guild_id))
     pattern = :binary.compile_pattern([guild.prefix, "sugarcane,", "<@779748651035131945>"])
@@ -24,11 +26,12 @@ defmodule Sugarcane.Consumer do
     if String.starts_with?(msg.content, pattern) do
       particles = msg.content
       |> String.split(" ", trim: true)
-    
+
       [command_name | args] = particles
       command_name = String.replace(String.downcase(command_name), pattern, "")
-    
-      ctx = %Context{msg: msg, args: args, guild_data: guild}
+      |> String.trim()
+
+      ctx = %Context{msg: msg, args: args, guild_data: guild, ws_state: ws_state}
       cmd = get_commands()
       |> Enum.filter(fn(c) -> c.name == command_name or Enum.member?(c.aliases, command_name) end)
       |> List.first()

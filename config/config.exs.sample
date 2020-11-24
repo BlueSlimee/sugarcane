@@ -8,11 +8,16 @@ config :sugarcane, Sugarcane.Repo,
   username: "are",
   password: "very",
   hostname: "cool",
-  loggers: [Sugarcane.Metrics.EctoInstrumenter]
 
 config :nostrum,
   token: "owo",
   num_shards: :auto
+
+config :sugarcane, Sugarcane.Scheduler,
+  debug_logging: false,
+  jobs: [
+    {"* * * * *", fn -> Sugarcane.Scheduler.every_minute() end}
+  ]
 
 config :porcelain,
   driver: Porcelain.Driver.Basic

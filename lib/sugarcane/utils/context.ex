@@ -1,6 +1,6 @@
 defmodule Sugarcane.Context do
   alias Nostrum.Api
-  defstruct [:msg, :guild_data, :args, :user_data]
+  defstruct [:msg, :ws_state, :guild_data, :args, :user_data]
   
   def reply(ctx, text) do
     Api.create_message(
@@ -10,7 +10,15 @@ defmodule Sugarcane.Context do
       message_reference: %{message_id: ctx.msg.id}
     )
   end
-  
+
+  def reply_embed(ctx, embed) do
+    Api.create_message(
+      ctx.msg.channel_id,
+      embed: embed,
+      message_reference: %{message_id: ctx.msg.id}
+    )
+  end
+
   def react(ctx, emoji) do
     Api.create_reaction(
       ctx.msg.channel_id,
@@ -21,13 +29,13 @@ defmodule Sugarcane.Context do
   
   def reject_action(ctx, cmd, reason, additional) do
     case reason do
-      :ma -> reply(ctx, ":x: Nope, wrong usage.\nCorrect usage: `#{ctx.guild_data.prefix}#{cmd.name()} #{cmd.usage()}`")
-      :bdo -> reply(ctx, ":x: Scram!")
-      :rhm -> reply(ctx, ":x: I can't interact with that user because they either have a role higher than mine, or they are as high as I am on the member list. Fix that, and try again.")
-      :ude -> reply(ctx, ":x: I didn't find the user you mentioned?\nMake sure that you're either mentioning the user, or using their ID.")
-      :ump -> reply(ctx, ":x: You are not authorized to execute this command.\nyou need the **#{additional}** permission in order to use this command.")
-      :cmp -> reply(ctx, ":x: I can't execute this command because I don't have the **#{additional}** permission.")
-      _ -> reply(ctx, ":question: Something went wrong. Try again?")
+      :ma -> reply(ctx, ":x: Errou!\nUtilização correta: `#{ctx.guild_data.prefix}#{cmd.name()} #{cmd.usage()}`")
+      :bdo -> reply(ctx, ":x: Evapora!")
+      :rhm -> reply(ctx, ":x: Eu não posso interagir com esse usuário por que ele possui uma role maior que a minha, ou está na mesma altura que eu na lista de membros.\nMe dê um cargo mais alto e tente novamente.")
+      :ude -> reply(ctx, ":x: Não consegui encontrar o usuário que você mencionou?\nTente usar o ID dele ou mencione-o.")
+      :ump -> reply(ctx, ":x: Você não tem permissão para executar este comando.\nVocê precisa da permissão de **#{additional}** para usar esse comando.")
+      :cmp -> reply(ctx, ":x: Não posso executar esse comando por que não tenho a permissão de **#{additional}**. Dê ela a mim e tente novamente.")
+      _ -> reply(ctx, ":question: Algo deu errado...? Tente novamente, por favor.")
     end
   end
   
@@ -83,7 +91,7 @@ defmodule Sugarcane.Context do
       nil ->
         case Api.get_current_user() do
           {:ok, d} -> d
-          {:error, reason} -> :error
+          {:error, _reason} -> :error
         end
       d -> d
     end
@@ -99,6 +107,21 @@ defmodule Sugarcane.Context do
           reject_action(ctx, nil, :cmp, perm_name)
           false
         end
+    end
+  end
+
+  def create_embed(ctx) do
+    %Nostrum.Struct.Embed{}
+    |> Nostrum.Struct.Embed.put_color(0x343c34)
+    |> Nostrum.Struct.Embed.put_timestamp(DateTime.to_iso8601(DateTime.now!("Etc/UTC")))
+    |> Nostrum.Struct.Embed.put_footer("Requisitado por " <> ctx.msg.author.username, Nostrum.Struct.User.avatar_url(ctx.msg.author, "png"))
+  end
+
+  def get_ping(ctx) do
+    if ctx.ws_state.last_heartbeat_ack do
+      DateTime.diff(ctx.ws_state.last_heartbeat_ack, ctx.ws_state.last_heartbeat_send)
+    else
+      DateTime.diff(DateTime.now!("Etc/UTC"), ctx.ws_state.last_heartbeat_send)
     end
   end
 end

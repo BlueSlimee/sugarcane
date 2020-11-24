@@ -28,7 +28,9 @@ defmodule Sugarcane.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:prometheus_ex, "~> 3.0"},
       {:prometheus_plugs, "~> 1.1"},
-      {:prometheus_ecto, "~> 1.0"}
+      {:prometheus_ecto, "~> 1.0"},
+      {:quantum, "~> 3.0"},
+      {:size, "~> 0.1.0"}
     ]
   end
 end

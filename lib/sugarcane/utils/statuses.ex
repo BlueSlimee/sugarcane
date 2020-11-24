@@ -6,7 +6,7 @@ defmodule Sugarcane.Utils.Status do
   end
   
   def init(init_arg) do
-    Process.send_after(self(), :update, 500)
+    Process.send_after(self(), :update, 10000)
     
     {:ok, init_arg}
   end
@@ -38,6 +38,7 @@ defmodule Sugarcane.Utils.Status do
     {2, "Deep Inside"},
     {2, "@Sugarcane"},
     {2, "Pierrot Lunaire"},
+    {2, "Gypsy Woman (She's Homeless)"},
     {2, "She Can't Love You Like I Do"},
     {2, "Ain't No Mountain High Enough"},
     {3, "Station 19"},
@@ -47,7 +48,10 @@ defmodule Sugarcane.Utils.Status do
     {3, "Private Practice"},
     {5, "a PUBG tournament"},
     {5, "a COD tournament"},
-    {5, "an osu! tournament"}
+    {5, "my backyard"},
+    {5, "an osu! tournament"},
+    {5, "something"},
+    {5, "NYC"}
     ]
   end
 end

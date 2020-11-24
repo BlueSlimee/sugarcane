@@ -8,7 +8,9 @@ defmodule Sugarcane.Metrics.ProcessedMessageInstrumenter do
       labels: [:processed]
     )
   end
-  
+
+  def val(), do: Counter.value(name: :sugarcane_processed_messages_total, labels: [:processed])
+
   def inc do
     Counter.inc(name: :sugarcane_processed_messages_total, labels: [:processed])
   end
