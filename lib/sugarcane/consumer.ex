@@ -23,6 +23,8 @@ defmodule Sugarcane.Consumer do
   end
 
   def handle_event({:MESSAGE_CREATE, msg, ws_state}) when is_integer(msg.guild_id) and msg.author.bot != true and msg.author.id != 779748651035131945 do
+    Sugarcane.Metrics.ProcessedMessageInstrumenter.inc()
+
     guild = Sugarcane.Schemas.Guilds.get(Integer.to_string(msg.guild_id))
 
     %User{id: bot_id, username: bot_username} = Me.get()
@@ -36,7 +38,7 @@ defmodule Sugarcane.Consumer do
 
 
       cmd = fetch_command(command_name)
-      IO.inspect cmd
+
       if cmd != nil do
         ctx = %Context{
           msg: msg,
