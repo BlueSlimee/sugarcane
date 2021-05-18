@@ -22,7 +22,7 @@ defmodule Sugarcane.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:nostrum, "~> 0.4"},
+      {:nostrum, "~> 0.4.6"},
       {:ecto_sql, "~> 3.2"},
       {:postgrex, "~> 0.15"},
       {:plug_cowboy, "~> 2.0"},
